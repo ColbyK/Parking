@@ -10,7 +10,7 @@ public class ParkingLot {
 	 private double currentPrice;
 	 private long overtimeLength;
 	 
-	 private final int MAX_LOG_SIZE = 10000;
+	 private static final int MAX_LOG_SIZE = 10000;
 	 
 	 public ParkingLot(int spots, double price, long overtime) {
 		 maxSpots = spots;

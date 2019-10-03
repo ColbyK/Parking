@@ -1,4 +1,5 @@
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 // Class for creating parking ticket objects
 public class ParkingTicket {
@@ -20,8 +21,26 @@ public class ParkingTicket {
 	// Function for closing a ticket
 	// Returns the price of the ticket including overtime charges
 	public double outMarker(Timestamp outTimestamp) {
-		outTime = outTimestamp;
-		int priceMultiplier = (int)Math.ceil((double)(outTime.getTime() - inTime.getTime()) / timeSegment);
-		return priceMultiplier * ticketPrice;
+		if(outTime == null) {
+			outTime = outTimestamp;
+			int priceMultiplier = (int)Math.ceil((double)(outTime.getTime() - inTime.getTime()) / timeSegment);
+			ticketPrice = priceMultiplier * ticketPrice;
+			return ticketPrice;
+		}
+		else {
+			return ticketPrice;
+		}
+	}
+	
+	public String toString() {
+		if(outTime == null) {
+			return "IN: " + getTimestampString(inTime);
+		}
+		else {
+			return "IN: " + getTimestampString(inTime) + " | OUT: " + getTimestampString(outTime) + " | PAY: $" + ticketPrice;
+		}	
+	}
+	private String getTimestampString(Timestamp time) {
+		return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(time);
 	}
 }
