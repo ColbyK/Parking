@@ -46,4 +46,7 @@ public class ParkingTicket {
 	public double getBasePrice() {
 		return ticketPrice;
 	}
+	public Timestamp getInTime() {
+		return (Timestamp)inTime.clone();
+	}
 }

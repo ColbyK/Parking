@@ -60,6 +60,9 @@ public class ParkingLot {
 	public double getPrice() {
 		return currentPrice;
 	}
+	public long getTimeAllowed() {
+		return overtimeLength;
+	}
 	// Helper method to add tickets to log
 	private void logTicket(ParkingTicket ticket) {
 		if(logSize < MAX_LOG_SIZE) {
