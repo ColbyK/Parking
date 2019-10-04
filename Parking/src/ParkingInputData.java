@@ -36,7 +36,6 @@ public class ParkingInputData {
 	private boolean allowPriceChange;
 	public static final boolean ALLOW_PRICE_CHANGE_DEFAULT = true;
 	//TODO VARIABLES
-	// flag for price change
 	
 	// instantiation for default data
 	public ParkingInputData() {
@@ -90,6 +89,10 @@ public class ParkingInputData {
 				case "Simulation_TickTime":
 					tickTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
 					break;
+				case "Simulation_AllowPriceChange":
+					if(line.substring(line.indexOf('=')+1).trim().toLowerCase().equals("false")) {
+						allowPriceChange = false;
+					}
 			}
 		}
 		catch(Exception e) {
@@ -107,6 +110,7 @@ public class ParkingInputData {
 		openTime = OPEN_TIME_DEFAULT;
 		closeTime = CLOSE_TIME_DEFAULT;
 		tickTime = TICK_TIME_DEFAULT;
+		allowPriceChange = ALLOW_PRICE_CHANGE_DEFAULT;
 	}
 	public int getMaxSpots() {
 		return maxSpots;
@@ -134,6 +138,9 @@ public class ParkingInputData {
 	}
 	public long getTickTime() {
 		return tickTime;
+	}
+	public boolean getAllowPriceChange() {
+		return allowPriceChange;
 	}
 }
 
