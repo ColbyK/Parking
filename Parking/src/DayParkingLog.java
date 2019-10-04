@@ -8,8 +8,6 @@ public class DayParkingLog {
 	private int dayLogSize;
 	// Timestamp of the day
 	private Timestamp day;
-	// Money gained for the specific day
-	private double dayIncome;
 	// Maximum size of the ticket log
 	private static final int MAX_LOG_SIZE = 10000;
 	
@@ -17,7 +15,6 @@ public class DayParkingLog {
 		day = dayMarker;
 		ticketLog = new ParkingTicket[MAX_LOG_SIZE];
 		dayLogSize = 0;
-		dayIncome = 0;
 	}
 	public void addTicket(ParkingTicket ticket) {
 		if(dayLogSize < MAX_LOG_SIZE) {
@@ -32,5 +29,12 @@ public class DayParkingLog {
 	}
 	public int getMonth() {
 		return day.getMonth();
+	}
+	public double getDayIncome() {
+		double money = 0;
+		for(int i = 0; i < ticketLog.length; i++) {
+			money += ticketLog[i].getPrice();
+		}
+		return money;
 	}
 }

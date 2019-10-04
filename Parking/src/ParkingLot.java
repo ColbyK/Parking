@@ -49,7 +49,7 @@ public class ParkingLot {
 		}
 		System.out.println("No active ticket found. Lost ticket fee charged.");
 		if(ticket != null) {
-			return ticket.getBasePrice() * 5;
+			return ticket.getPrice() * 5;
 		}
 		return currentPrice * 5;
 	}
@@ -67,6 +67,7 @@ public class ParkingLot {
 	}
 	// Helper method to add tickets to log
 	private void logTicket(ParkingTicket ticket) {
+		// Check for currently existing day log that pairs with the ticket day. If log exists, add ticket to that log. If log does not exist, create new log and add ticket
 		for(int i = 0; i < dayLogSize; i++) {
 			if(dayLogs[i].getMonth() == ticket.getInTime().getMonth() && dayLogs[i].getMonth() == ticket.getInTime().getMonth()) {
 				dayLogs[i].addTicket(ticket);
@@ -75,6 +76,7 @@ public class ParkingLot {
 		}
 		if(dayLogSize < MAX_DAY_LOG_SIZE) {
 			dayLogs[dayLogSize++] = new DayParkingLog(ticket.getInTime());
+			dayLogs[dayLogSize - 1].addTicket(ticket);
 		}
 		else {
 			System.out.println("Max day log size reached. Cannot log anymore tickets");

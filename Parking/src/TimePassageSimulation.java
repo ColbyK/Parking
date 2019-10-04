@@ -22,7 +22,7 @@ public class TimePassageSimulation {
 		runLeavingCustomers(lot);
 		runNewCustomers(demand, lot);
 	}
-	// Runs 
+	// Runs leaving customers section
 	private void runLeavingCustomers(ParkingLot lot) {
 		for(int i = 0; i < activePeople.size(); i++) {
 			if(activePeople.get(i).readyToLeave(time)) {
@@ -31,6 +31,7 @@ public class TimePassageSimulation {
 			}
 		}
 	}
+	// Runs new customers section
 	private void runNewCustomers(PopulusDemand demand, ParkingLot lot) {
 		int newCustomers = (int)(generalActivity * Math.random());
 		for(int i = 0; i < newCustomers; i++) {
