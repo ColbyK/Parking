@@ -22,9 +22,13 @@ public class TimePassageSimulation {
 		runLeavingCustomers(lot);
 		runNewCustomers(demand, lot);
 	}
+	// Runs 
 	private void runLeavingCustomers(ParkingLot lot) {
 		for(int i = 0; i < activePeople.size(); i++) {
-			
+			if(activePeople.get(i).readyToLeave(time)) {
+				lot.returnTicket(activePeople.get(i).getTicket(), time);
+				activePeople.remove(i++);
+			}
 		}
 	}
 	private void runNewCustomers(PopulusDemand demand, ParkingLot lot) {

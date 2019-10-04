@@ -6,9 +6,9 @@ public class ParkingLot {
 	// Active tickets for the parking lot, in other words: Tickets that had been created but not yet closed
 	private ArrayList<ParkingTicket> activeTickets;
 	// A log of all tickets for the parking lot
-	private ParkingTicket[] ticketLog;
+	private DayParkingLog[] dayLogs;
 	// The current size of the ticketLog
-	private int logSize;
+	private int dayLogSize;
 	// Maximum number of slots in the parking lot
 	private int maxSpots;
 	// The current price of a ticket 
@@ -16,14 +16,15 @@ public class ParkingLot {
 	// The time allowed for being in the lot, after that time essentially pay for a new ticket (price is doubled then tripled aand so on).
 	private long overtimeLength;
 	// Maximum size for the ticketLog
-	private static final int MAX_LOG_SIZE = 25000;
+	private static final int MAX_DAY_LOG_SIZE = 250;
 	
 	public ParkingLot(int spots, double price, long overtime) {
 		maxSpots = spots;
 		currentPrice = price;
 		overtimeLength = overtime;
 		activeTickets = new ArrayList<ParkingTicket>();
-		ticketLog = new ParkingTicket[MAX_LOG_SIZE];
+		dayLogs = new DayParkingLog[MAX_DAY_LOG_SIZE];
+		dayLogSize = 0;
 		currentPrice = 0;
 	}
 	// Creates a ticket with with given time, logs and returns it
@@ -60,16 +61,23 @@ public class ParkingLot {
 	public double getPrice() {
 		return currentPrice;
 	}
+	// Gets the time allowed for the current price
 	public long getTimeAllowed() {
 		return overtimeLength;
 	}
 	// Helper method to add tickets to log
 	private void logTicket(ParkingTicket ticket) {
-		if(logSize < MAX_LOG_SIZE) {
-			ticketLog[logSize++] = ticket;
+		for(int i = 0; i < dayLogSize; i++) {
+			if(dayLogs[i].getMonth() == ticket.getInTime().getMonth() && dayLogs[i].getMonth() == ticket.getInTime().getMonth()) {
+				dayLogs[i].addTicket(ticket);
+				return;
+			}
+		}
+		if(dayLogSize < MAX_DAY_LOG_SIZE) {
+			dayLogs[dayLogSize++] = new DayParkingLog(ticket.getInTime());
 		}
 		else {
-			System.out.println("Max log size reached. Cannot log anymore tickets");
+			System.out.println("Max day log size reached. Cannot log anymore tickets");
 		}
 	}
 }
