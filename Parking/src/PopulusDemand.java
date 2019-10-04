@@ -10,6 +10,6 @@ public class PopulusDemand {
 	
 	public boolean acceptInstance(double ticketPrice) {
 		double acceptanceRate = pickyness * ticketPrice / standardTicketPrice;
-		return Math.random() < acceptanceRate;
+		return Math.random() > acceptanceRate;
 	}
 }
