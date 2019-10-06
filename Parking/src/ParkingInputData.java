@@ -4,7 +4,6 @@ import java.io.IOException;
 
 // Input data that contains both defaults and customized inputs
 public class ParkingInputData {
-	//TODO variables based on input
 	// Maximum slots in the lot
 	private int maxSpots;
 	public static final int MAX_SPOTS_DEFAULT = 1000;

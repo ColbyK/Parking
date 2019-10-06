@@ -20,6 +20,9 @@ public class Customer {
 	public boolean readyToLeave(Timestamp currentTime) {
 		return (ticket.getInTime().getTime() + stayTime < currentTime.getTime());
 	}
+	public boolean readyToLeave(long currentTime) {
+		return (ticket.getInTime2() + stayTime < currentTime);
+	}
 	// Gets a length of time with variance equation
 	// Graph: https://i.imgur.com/cZ3it9u.png
 	private long varyTime(long time) {

@@ -1,3 +1,6 @@
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -39,8 +42,32 @@ public class ParkingLot {
 			return null;
 		}
 	}
+	public ParkingTicket requestTicket(long time) {
+		if(!isFull()) {
+			ParkingTicket ticket = new ParkingTicket(currentPrice, time, overtimeLength);
+			logTicket(ticket);
+			activeTickets.add(ticket);
+			return ticket;
+		}
+		else {
+			return null;
+		}
+	}
 	// Returns a given ticket, and returns the price
 	public double returnTicket(ParkingTicket ticket, Timestamp time) {
+		for(int i = 0; i < activeTickets.size(); i++) {
+			if(ticket == activeTickets.get(i)) {
+				activeTickets.remove(i);
+				return ticket.outMarker(time);
+			}
+		}
+		System.out.println("No active ticket found. Lost ticket fee charged.");
+		if(ticket != null) {
+			return ticket.getPrice() * 5;
+		}
+		return currentPrice * 5;
+	}
+	public double returnTicket(ParkingTicket ticket, long time) {
 		for(int i = 0; i < activeTickets.size(); i++) {
 			if(ticket == activeTickets.get(i)) {
 				activeTickets.remove(i);
@@ -80,6 +107,32 @@ public class ParkingLot {
 		}
 		else {
 			System.out.println("Max day log size reached. Cannot log anymore tickets");
+		}
+	}
+	public void getGeneralReport(String fileName) {
+		try {
+			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			for(int i = 0; i < dayLogSize; i++) {
+				writer.write(dayLogs[i].getGeneralReport());
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	public void getFullReport(String fileName) {
+		try {
+			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			for(int i = 0; i < dayLogSize; i++) {
+				writer.write(dayLogs[i].getFullReport());
+			}
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
 		}
 	}
 }
