@@ -59,45 +59,48 @@ public class ParkingInputData {
 		}
 	}
 	private void checkInputLine(String line) {
-		try {
-			switch (line) {
-				case "Lot_MaxSpots":
-					maxSpots = Integer.parseInt(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Lot_BasePrice":
-					basePrice = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Lot_TimePerCharge":
-					overTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Lot_OpenTime":
-					openTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Lot_CloseTime":
-					closeTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Population_Pickyness":
-					pickyness = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Population_ActivityRate":
-					activityRate = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Simulation_Days":
-					simDays = Integer.parseInt(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Simulation_TickTime":
-					tickTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
-					break;
-				case "Simulation_AllowPriceChange":
-					if(line.substring(line.indexOf('=')+1).trim().toLowerCase().equals("false")) {
-						allowPriceChange = false;
-					}
+		String lineTest = "";
+		if(line.contains("=")) {
+			lineTest = line.substring(0,line.indexOf('='));
+			try {
+				switch (lineTest) {
+					case "Lot_MaxSpots":
+						maxSpots = Integer.parseInt(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Lot_BasePrice":
+						basePrice = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Lot_TimePerCharge":
+						overTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Lot_OpenTime":
+						openTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Lot_CloseTime":
+						closeTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Population_Pickyness":
+						pickyness = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Population_ActivityRate":
+						activityRate = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Simulation_Days":
+						simDays = Integer.parseInt(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Simulation_TickTime":
+						tickTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim());
+						break;
+					case "Simulation_AllowPriceChange":
+						if(line.substring(line.indexOf('=')+1).trim().toLowerCase().equals("false")) {
+							allowPriceChange = false;
+						}
+				}
 			}
-		}
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-			
+			catch(Exception e) {
+				e.printStackTrace();
+			}
+		}	
 	}
 	private void setDefaultData() {
 		maxSpots = MAX_SPOTS_DEFAULT;
