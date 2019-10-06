@@ -1,4 +1,3 @@
-import java.sql.Timestamp;
 
 // Class for Customers currently holding tickets
 public class Customer {
@@ -17,11 +16,8 @@ public class Customer {
 		return ticket;
 	}
 	// Checks if the customer is ready to leave
-	public boolean readyToLeave(Timestamp currentTime) {
-		return (ticket.getInTime().getTime() + stayTime < currentTime.getTime());
-	}
 	public boolean readyToLeave(long currentTime) {
-		return (ticket.getInTime2() + stayTime < currentTime);
+		return (ticket.getInTime() + stayTime < currentTime);
 	}
 	// Gets a length of time with variance equation
 	// Graph: https://i.imgur.com/cZ3it9u.png

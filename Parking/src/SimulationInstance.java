@@ -1,4 +1,3 @@
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Calendar;
 
@@ -9,11 +8,9 @@ public class SimulationInstance {
 	private TimePassageSimulation timePassage;
 	private ParkingInputData inputData;
 	// Start time of the simulation
-	private Timestamp simEnd;
-	private long simEnd2;
+	private long simEnd;
 	// End time of the simulation
-	private Timestamp simStart;
-	private long simStart2;
+	private long simStart;
 	// Default data instantiation
 	public SimulationInstance() {
 		inputData = new ParkingInputData();
@@ -27,18 +24,18 @@ public class SimulationInstance {
 	// Instantiate objects
 	private void initData() {
 		simStart = getEpochTimeOfDay(Instant.now().getEpochSecond(), inputData.getOpenTime());
-		simEnd = getEpochTimeOfDay(simStart.getTime() + 86400 * inputData.getSimDays(), inputData.getOpenTime());
+		simEnd = getEpochTimeOfDay(simStart + 86400 * inputData.getSimDays(), inputData.getOpenTime());
 		lot = new ParkingLot(inputData.getMaxSpots(), inputData.getBasePrice(), inputData.getOverTime());
 		popDemand = new PopulusDemand(inputData.getPickyness(), inputData.getBasePrice());
-		timePassage = new TimePassageSimulation(inputData.getActivityRate(), inputData.getTickTime(), simStart, inputData.getOpenTime(), inputData.getCloseTime());             
+		timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getMaxSpots(), inputData.getTickTime(), simStart, inputData.getOpenTime(), inputData.getCloseTime());             
 		
 	}
 	public void runSimulation() {
 		// Keep running until end of simulation
 		System.out.println(timePassage.getTime());
-		System.out.println(simEnd.getTime());
-		System.out.println(simStart.getTime());
-		while(timePassage.getTime() < simEnd.getTime()) {
+		System.out.println(simEnd);
+		System.out.println(simStart);
+		while(timePassage.getTime() < simEnd) {
 			timePassage.runCurrentTick(popDemand, lot);
 			timePassage.tick();
 		}
@@ -50,17 +47,7 @@ public class SimulationInstance {
 		lot.getFullReport(fileName);
 	}
 	// Gets the open time for the day 
-	public static Timestamp getEpochTimeOfDay(long dayInTime, long startTime) {
-		Timestamp newDay = new Timestamp(dayInTime);
-		System.out.println("Start: " + newDay.getTime());
-		newDay.setHours(0);
-		newDay.setMinutes(0);
-		newDay.setSeconds(0);
-		newDay.setTime(newDay.getTime() + startTime);
-		System.out.println("End: " + newDay.getTime());
-		return newDay;
-	}
-	public static long getEpochTimeOfDay2(long timeToSet, long startTime) {
+	public static long getEpochTimeOfDay(long timeToSet, long startTime) {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(timeToSet * 1000);
 		c.set(Calendar.HOUR_OF_DAY, 0);

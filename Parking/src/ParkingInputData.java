@@ -18,7 +18,7 @@ public class ParkingInputData {
 	public static final double PICKYNESS_DEFAULT = 0.5;
 	// Activity rate for the simulation time. Default 0.2 = 20% of max slots per tick
 	private double activityRate;
-	public static final double ACTIVITY_RATE_DEFAULT = 0.2;
+	public static final double ACTIVITY_RATE_DEFAULT = 0.01;
 	// Number of days to run the simulation
 	private int simDays;
 	public static final int SIM_DAYS_DEFAULT = 30;

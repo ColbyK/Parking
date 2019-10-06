@@ -1,4 +1,3 @@
-import java.sql.Timestamp;
 import java.util.Calendar;
 
 // Class for the log of each day with each parking ticket recorded
@@ -8,17 +7,11 @@ public class DayParkingLog {
 	// Current size of the ticket log
 	private int dayLogSize;
 	// Timestamp of the day
-	private Timestamp day;
-	private long day2;
+	private long day;
 	// Maximum size of the ticket log
 	private static final int MAX_LOG_SIZE = 10000;
 	
 	public DayParkingLog(long dayMarker) {
-		day2 = dayMarker;
-		ticketLog = new ParkingTicket[MAX_LOG_SIZE];
-		dayLogSize = 0;
-	}
-	public DayParkingLog(Timestamp dayMarker) {
 		day = dayMarker;
 		ticketLog = new ParkingTicket[MAX_LOG_SIZE];
 		dayLogSize = 0;
@@ -32,20 +25,14 @@ public class DayParkingLog {
 		}
 	}
 	public int getDay() {
-		return day.getDate();
-	}
-	public int getDay2() {
 		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(day2*1000);
+		c.setTimeInMillis(day*1000);
 		return c.get(Calendar.DATE);
 	}
-	public int getMonth2() {
-		Calendar c = Calendar.getInstance();
-		c.setTimeInMillis(day2*1000);
-		return c.get(Calendar.MONTH);
-	}
 	public int getMonth() {
-		return day.getMonth();
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(day*1000);
+		return c.get(Calendar.MONTH);
 	}
 	public String getStringMonth() {
 		switch(getMonth()) {
@@ -79,7 +66,7 @@ public class DayParkingLog {
 	}
 	public double getDayIncome() {
 		double money = 0;
-		for(int i = 0; i < ticketLog.length; i++) {
+		for(int i = 0; i < dayLogSize; i++) {
 			money += ticketLog[i].getPrice();
 		}
 		return money;
@@ -97,9 +84,10 @@ public class DayParkingLog {
 	}
 	public String getGeneralReport() {
 		String report = "";
-		report += "Day :\t\t\t" + getStringMonth() + " " + getDay() + '\n';
+		report += "======================================\n";
+		report += "Day :\t\t\t\t" + getStringMonth() + " " + getDay() + '\n';
 		report += "Number of Tickets :\t" + dayLogSize + '\n';
-		report += "Income:\t\t\t" + getDayIncome() + '\n';
+		report += "Income:\t\t\t\t$ " + getDayIncome() + '\n';
 		return report;
 	}
 }

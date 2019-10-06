@@ -1,8 +1,8 @@
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 // Class for parking lot data
 public class ParkingLot {
@@ -28,20 +28,8 @@ public class ParkingLot {
 		activeTickets = new ArrayList<ParkingTicket>();
 		dayLogs = new DayParkingLog[MAX_DAY_LOG_SIZE];
 		dayLogSize = 0;
-		currentPrice = 0;
 	}
 	// Creates a ticket with with given time, logs and returns it
-	public ParkingTicket requestTicket(Timestamp time) {
-		if(!isFull()) {
-			ParkingTicket ticket = new ParkingTicket(currentPrice, time, overtimeLength);
-			logTicket(ticket);
-			activeTickets.add(ticket);
-			return ticket;
-		}
-		else {
-			return null;
-		}
-	}
 	public ParkingTicket requestTicket(long time) {
 		if(!isFull()) {
 			ParkingTicket ticket = new ParkingTicket(currentPrice, time, overtimeLength);
@@ -54,19 +42,6 @@ public class ParkingLot {
 		}
 	}
 	// Returns a given ticket, and returns the price
-	public double returnTicket(ParkingTicket ticket, Timestamp time) {
-		for(int i = 0; i < activeTickets.size(); i++) {
-			if(ticket == activeTickets.get(i)) {
-				activeTickets.remove(i);
-				return ticket.outMarker(time);
-			}
-		}
-		System.out.println("No active ticket found. Lost ticket fee charged.");
-		if(ticket != null) {
-			return ticket.getPrice() * 5;
-		}
-		return currentPrice * 5;
-	}
 	public double returnTicket(ParkingTicket ticket, long time) {
 		for(int i = 0; i < activeTickets.size(); i++) {
 			if(ticket == activeTickets.get(i)) {
@@ -95,8 +70,12 @@ public class ParkingLot {
 	// Helper method to add tickets to log
 	private void logTicket(ParkingTicket ticket) {
 		// Check for currently existing day log that pairs with the ticket day. If log exists, add ticket to that log. If log does not exist, create new log and add ticket
+		Calendar c = Calendar.getInstance();
 		for(int i = 0; i < dayLogSize; i++) {
-			if(dayLogs[i].getMonth() == ticket.getInTime().getMonth() && dayLogs[i].getMonth() == ticket.getInTime().getMonth()) {
+			c.setTimeInMillis(ticket.getInTime()*1000);
+			c.get(Calendar.DATE);
+			//System.out.println("BEFORE MONTH : " + dayLogs[i].getMonth() + " == " );
+			if(dayLogs[i].getMonth() == c.get(Calendar.MONTH) && dayLogs[i].getDay() == c.get(Calendar.DATE)) {
 				dayLogs[i].addTicket(ticket);
 				return;
 			}
