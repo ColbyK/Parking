@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Calendar;
 
 // Uses various input to simulate the passage of time for customers arriving and leaving the parking lot
 public class TimePassageSimulation {
@@ -23,9 +24,12 @@ public class TimePassageSimulation {
 		simEndDay = endDay;
 		
 	}
-	public void tick() {
+	// Returns true if the tick results in a day at opening time
+	public boolean tick() {
+		boolean before = isOpenTime();
 		time += tickTime;
 		//System.out.println(time);
+		return !before && isOpenTime();
 	}
 	public void runCurrentTick(PopulusDemand demand, ParkingLot lot) {
 		long dayMidnight = SimulationInstance.getEpochTimeOfDay(time, simStartDay);
@@ -58,5 +62,13 @@ public class TimePassageSimulation {
 	}
 	public long getTime() {
 		return time;
+	}
+	private boolean isOpenTime() {
+		Calendar c = Calendar.getInstance();
+		c.setTimeInMillis(time * 1000);
+		c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		return (c.getTimeInMillis()/1000 + simStartDay <= time && c.getTimeInMillis()/1000 + simEndDay >= time);
 	}
 }

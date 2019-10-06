@@ -8,13 +8,16 @@ public class DayParkingLog {
 	private int dayLogSize;
 	// Timestamp of the day
 	private long day;
+	// Base price for the lot at this day
+	private double basePrice;
 	// Maximum size of the ticket log
 	private static final int MAX_LOG_SIZE = 10000;
 	
-	public DayParkingLog(long dayMarker) {
+	public DayParkingLog(long dayMarker, double price) {
 		day = dayMarker;
 		ticketLog = new ParkingTicket[MAX_LOG_SIZE];
 		dayLogSize = 0;
+		basePrice = price;
 	}
 	public void addTicket(ParkingTicket ticket) {
 		if(dayLogSize < MAX_LOG_SIZE) {
@@ -87,7 +90,14 @@ public class DayParkingLog {
 		report += "======================================\n";
 		report += "Day :\t\t\t\t" + getStringMonth() + " " + getDay() + '\n';
 		report += "Number of Tickets :\t" + dayLogSize + '\n';
-		report += "Income:\t\t\t\t$ " + getDayIncome() + '\n';
+		report += "Income :\t\t\t\t$ " + getDayIncome() + '\n';
+		report += "Base Price :\t\t\t$ " + basePrice + "\n";
 		return report;
+	}
+	public String getGeneralReportForR() {
+		return basePrice + " " + getDayIncome() + '\n';
+	}
+	public double getBasePrice() {
+		return basePrice;
 	}
 }

@@ -20,14 +20,14 @@ public class Customer {
 		return (ticket.getInTime() + stayTime < currentTime);
 	}
 	// Gets a length of time with variance equation
-	// Graph: https://i.imgur.com/cZ3it9u.png
+	// Graph: https://i.imgur.com/ZEIFiHk.png
 	private long varyTime(long time) {
 		double rand = Math.random();
 		if(rand < 0.5) {
 			return (long) ((1 + 7 * Math.pow(rand - .5, 3)) * time);
 		}
 		else {
-			return (long) ((1 + 10 * Math.pow(rand - .5, 2)) * time);
+			return (long) ((1 + 6 * Math.pow(rand - .5, 2)) * time);
 		}
 	}
 }

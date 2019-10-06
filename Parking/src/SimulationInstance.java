@@ -31,13 +31,12 @@ public class SimulationInstance {
 		
 	}
 	public void runSimulation() {
-		// Keep running until end of simulation
-		System.out.println(timePassage.getTime());
-		System.out.println(simEnd);
-		System.out.println(simStart);
-		while(timePassage.getTime() < simEnd) {
+		// Keep running until end of simulation + offset for people leaving
+		while(timePassage.getTime() < simEnd + 3*inputData.getOverTime()) {
+			if(timePassage.tick() && inputData.getAllowPriceChange()) {
+				lot.reevaluatePrice();
+			}
 			timePassage.runCurrentTick(popDemand, lot);
-			timePassage.tick();
 		}
 	}
 	public void getGeneralReport(String fileName) {
@@ -45,6 +44,9 @@ public class SimulationInstance {
 	}
 	public void getFullReport(String fileName) {
 		lot.getFullReport(fileName);
+	}
+	public void getGeneralReportForR(String fileName) {
+		lot.getGeneralForR(fileName);
 	}
 	// Gets the open time for the day 
 	public static long getEpochTimeOfDay(long timeToSet, long startTime) {

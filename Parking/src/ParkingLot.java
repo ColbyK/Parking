@@ -18,6 +18,8 @@ public class ParkingLot {
 	private double currentPrice;
 	// The time allowed for being in the lot, after that time essentially pay for a new ticket (price is doubled then tripled aand so on).
 	private long overtimeLength;
+	// Flag to
+	//private boolean priceBranchFlag;
 	// Maximum size for the ticketLog
 	private static final int MAX_DAY_LOG_SIZE = 250;
 	
@@ -81,7 +83,7 @@ public class ParkingLot {
 			}
 		}
 		if(dayLogSize < MAX_DAY_LOG_SIZE) {
-			dayLogs[dayLogSize++] = new DayParkingLog(ticket.getInTime());
+			dayLogs[dayLogSize++] = new DayParkingLog(ticket.getInTime(), ticket.getPrice());
 			dayLogs[dayLogSize - 1].addTicket(ticket);
 		}
 		else {
@@ -91,9 +93,12 @@ public class ParkingLot {
 	public void getGeneralReport(String fileName) {
 		try {
 			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			String concatReport = "";
 			for(int i = 0; i < dayLogSize; i++) {
-				writer.write(dayLogs[i].getGeneralReport());
+				//writer.write(dayLogs[i].getGeneralReport());
+				concatReport += dayLogs[i].getGeneralReport();
 			}
+			writer.write(concatReport);
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -104,14 +109,106 @@ public class ParkingLot {
 	public void getFullReport(String fileName) {
 		try {
 			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			String concatReport = "";
 			for(int i = 0; i < dayLogSize; i++) {
-				writer.write(dayLogs[i].getFullReport());
+				//writer.write(dayLogs[i].getFullReport());
+				concatReport += dayLogs[i].getFullReport();
 			}
+			writer.write(concatReport);
 			writer.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
+	}
+	public void getGeneralForR(String fileName) {
+		try {
+			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			String concatReport = "";
+			for(int i = 0; i < dayLogSize; i++) {
+				//writer.write(dayLogs[i].getFullReport());
+				concatReport += dayLogs[i].getGeneralReportForR();
+			}
+			writer.write(concatReport);
+			writer.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
+	public void reevaluatePrice() {
+		if(dayLogSize == 0) {
+			return;
+		}
+		double originalBasePrice = dayLogs[0].getBasePrice();
+		if(dayLogSize == 1) { // Increase original price by 20%
+			currentPrice = originalBasePrice + originalBasePrice * 0.2;
+		}
+		else if(dayLogSize == 2) { // Decrease original price by 20%
+			currentPrice = originalBasePrice - originalBasePrice * 0.2;
+		}
+		else { // Evaluate based on previous info
+			DayParkingLog[] sortedList = dayLogs.clone();
+			sortByPrice(sortedList, 0, dayLogSize - 1);
+			int maxIncomeIndex = getMaxIncomeIndex(sortedList, dayLogSize);
+			// Peak income has not been reached for increasing price
+			if(maxIncomeIndex == dayLogSize - 1) {
+				currentPrice = sortedList[maxIncomeIndex].getBasePrice() + originalBasePrice * 0.2;
+			}
+			// Peak income has not been reached for decreasing price
+			else if(maxIncomeIndex == 0) {
+				// TODO set minimum for price reevaluation
+				if(sortedList[0].getBasePrice() > 1) {
+					currentPrice = sortedList[maxIncomeIndex].getBasePrice() - originalBasePrice * 0.2;
+				}
+			}
+			//Peak income is between the ends of the price range
+			else {
+				double leftPriceDiff = Math.abs(sortedList[maxIncomeIndex].getBasePrice() - sortedList[maxIncomeIndex - 1].getBasePrice());
+				double rightPriceDiff = Math.abs(sortedList[maxIncomeIndex].getBasePrice() - sortedList[maxIncomeIndex + 1].getBasePrice());
+				// Left side has larger price difference
+				if(leftPriceDiff > rightPriceDiff) {
+					currentPrice = sortedList[maxIncomeIndex].getBasePrice() - leftPriceDiff / 2;
+				}
+				// Right side has larger price difference or the same
+				else {
+					currentPrice = sortedList[maxIncomeIndex].getBasePrice() + rightPriceDiff / 2;
+				}
+			}
+		}
+	}
+	private void sortByPrice(DayParkingLog[] list, int low, int high) {
+		if(low < high) {
+			double pivot = list[high].getBasePrice();
+			int index = low - 1;
+			for(int i = low; i < high; i++) {
+				if(list[i].getBasePrice() < pivot) {
+					DayParkingLog temp = list[++index];
+					list[index] = list[i];
+					list[i] = temp;
+				}
+			}
+			DayParkingLog temp = list[index + 1];
+			list[index + 1] = list[high];
+			list[high] = temp;
+			int partIndex = index + 1;
+			/////
+			sortByPrice(list, low, partIndex - 1);
+			sortByPrice(list, partIndex + 1, high);
+		}
+	}
+	private int getMaxIncomeIndex(DayParkingLog[] list, int size) {
+		if(size <= 0) {
+			return -1;
+		}
+		int maxIndex = 0;
+		for(int i = 1; i < size; i++) {
+			if(list[i].getDayIncome() > list[maxIndex].getDayIncome()) {
+				maxIndex = i;
+			}
+		}
+		return maxIndex;
 	}
 }
