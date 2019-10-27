@@ -5,15 +5,15 @@ import java.io.IOException;
 // Input data that contains both defaults and customized inputs
 public class ParkingInputData {
 	// Maximum slots in the lot
-	private int maxSpots; // TODO DELETE
+	//private int maxSpots; // TODO DELETE
 	private int[] maxSpotsArr;
 	public static final int MAX_SPOTS_DEFAULT = 1000;
 	// Base price for a ticket
-	private double basePrice; // TODO DELETE
+	//private double basePrice; // TODO DELETE
 	private double[] basePriceArr;
 	public static final double BASE_PRICE_DEFAULT = 5.0;
 	// Time allowed to be in the lot for the price of a ticket. Default 7200 = 2 hours
-	private long overTime; // TODO DELETE
+	//private long overTime; // TODO DELETE
 	private long[] overTimeArr;
 	public static final long OVER_TIME_DEFAULT = 7200;
 	// Pickyness of the simulation populus. Default 0.5 = Average
@@ -26,11 +26,11 @@ public class ParkingInputData {
 	private int simDays;
 	public static final int SIM_DAYS_DEFAULT = 10;
 	// Seconds from start of the day that the lot opens. Default 21600 = 6am
-	private long openTime; // TODO DELETE
+	//private long openTime; // TODO DELETE
 	private long[] openTimeArr;
 	public static final long OPEN_TIME_DEFAULT = 21600;
 	// Seconds from start of the days that the lot closes. Default 79200 = 10pm
-	private long closeTime; // TODO DELETE
+	//private long closeTime; // TODO DELETE
 	private long[] closeTimeArr;
 	public static final long CLOSE_TIME_DEFAULT = 79200;
 	// Seconds for each tick of the simulation. Default 600 = 10 minutes
@@ -130,7 +130,7 @@ public class ParkingInputData {
 						for(int i = 0; i < strArr.length; i++) {
 							maxSpotsArr[i] = Integer.parseInt(strArr[i]);
 						}
-						maxSpots = Integer.parseInt(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
+						//maxSpots = Integer.parseInt(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
 						break;
 					case "Lot_BasePrice":
 						strArr = line.substring(line.indexOf('=')+1).trim().split("\\s+");
@@ -138,7 +138,7 @@ public class ParkingInputData {
 						for(int i = 0; i < strArr.length; i++) {
 							basePriceArr[i] = Double.parseDouble(strArr[i]);
 						}
-						basePrice = Double.parseDouble(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
+						//basePrice = Double.parseDouble(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
 						break;
 					case "Lot_TimePerCharge":
 						strArr = line.substring(line.indexOf('=')+1).trim().split("\\s+");
@@ -146,7 +146,7 @@ public class ParkingInputData {
 						for(int i = 0; i < strArr.length; i++) {
 							overTimeArr[i] = Long.parseLong(strArr[i]);
 						}
-						overTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
+						//overTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
 						break;
 					case "Lot_OpenTime":
 						strArr = line.substring(line.indexOf('=')+1).trim().split("\\s+");
@@ -154,7 +154,7 @@ public class ParkingInputData {
 						for(int i = 0; i < strArr.length; i++) {
 							openTimeArr[i] = Long.parseLong(strArr[i]);
 						}
-						openTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
+						//openTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
 						break;
 					case "Lot_CloseTime":
 						strArr = line.substring(line.indexOf('=')+1).trim().split("\\s+");
@@ -162,7 +162,7 @@ public class ParkingInputData {
 						for(int i = 0; i < strArr.length; i++) {
 							closeTimeArr[i] = Long.parseLong(strArr[i]);
 						}
-						closeTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
+						//closeTime = Long.parseLong(line.substring(line.indexOf('=')+1).trim()); // TODO DELETE
 						break;
 					case "Population_Pickyness":
 						pickyness = Double.parseDouble(line.substring(line.indexOf('=')+1).trim());
@@ -180,6 +180,9 @@ public class ParkingInputData {
 						if(line.substring(line.indexOf('=')+1).trim().toLowerCase().equals("false")) {
 							allowPriceChange = false;
 						}
+						break;
+					case "Simulation_NumberOfLots":
+						numLots = Integer.parseInt(line.substring(line.indexOf('=')+1).trim());
 				}
 			}
 			catch(Exception e) {
@@ -188,37 +191,45 @@ public class ParkingInputData {
 		}	
 	}
 	private void setDefaultData() {
-		maxSpots = MAX_SPOTS_DEFAULT; // TODO DELETE
+		//maxSpots = MAX_SPOTS_DEFAULT; // TODO DELETE
 		maxSpotsArr = new int[] {MAX_SPOTS_DEFAULT};
-		basePrice = BASE_PRICE_DEFAULT; // TODO DELETE
+		//basePrice = BASE_PRICE_DEFAULT; // TODO DELETE
 		basePriceArr = new double[] {BASE_PRICE_DEFAULT};
-		overTime = OVER_TIME_DEFAULT; // TODO DELETE
+		//overTime = OVER_TIME_DEFAULT; // TODO DELETE
 		overTimeArr = new long[] {OVER_TIME_DEFAULT};
 		pickyness = PICKYNESS_DEFAULT;
 		activityRate = ACTIVITY_RATE_DEFAULT;
 		simDays = SIM_DAYS_DEFAULT;
-		openTime = OPEN_TIME_DEFAULT; // TODO DELETE
+		//openTime = OPEN_TIME_DEFAULT; // TODO DELETE
 		openTimeArr = new long[] {OPEN_TIME_DEFAULT};
-		closeTime = CLOSE_TIME_DEFAULT; // TODO DELETE
+		//closeTime = CLOSE_TIME_DEFAULT; // TODO DELETE
 		closeTimeArr = new long[] {CLOSE_TIME_DEFAULT};
 		tickTime = TICK_TIME_DEFAULT;
 		allowPriceChange = ALLOW_PRICE_CHANGE_DEFAULT;
 		numLots = NUM_LOTS_DEFAULT;
 	}
-	public int getMaxSpots() { // TODO DELETE
-		return maxSpots;
+	public int getLargestMaxSpots() {
+		int max = 0;
+		for(int i = 0; i < maxSpotsArr.length; i++) {
+			max = Math.max(max, maxSpotsArr[i]);
+		}
+		return max;
 	}
 	public int[] getMaxSpots___() {
 		return maxSpotsArr;
 	}
-	public double getBasePrice() { // TODO DELETE
-		return basePrice;
-	}
+	//public double getBasePrice() { // TODO DELETE
+		//return basePrice;
+	//}
 	public double[] getBasePrice___() {
 		return basePriceArr;
 	}
-	public long getOverTime() { // TODO DELETE
-		return overTime;
+	public long getLargestOverTime() {
+		long max = 0;
+		for(int i = 0; i < overTimeArr.length; i++) {
+			max = Math.max(max, overTimeArr[i]);
+		}
+		return max;
 	}
 	public long[] getOverTime___() {
 		return overTimeArr;
@@ -232,15 +243,19 @@ public class ParkingInputData {
 	public int getSimDays() {
 		return simDays;
 	}
-	public long getOpenTime() { // TODO DELETE
-		return openTime;
+	public long getEarliestOpenTime() {
+		long min = Long.MAX_VALUE;
+		for(int i = 0; i < openTimeArr.length; i++) {
+			min = Math.min(min, openTimeArr[i]);
+		}
+		return min;
 	}
 	public long[] getOpenTime___() {
 		return openTimeArr;
 	}
-	public long getCloseTime() { // TODO DELETE
-		return closeTime;
-	}
+	//public long getCloseTime() { // TODO DELETE
+	//	return closeTime;
+	//}
 	public long[] getCloseTime___() {
 		return closeTimeArr;
 	}
@@ -252,6 +267,9 @@ public class ParkingInputData {
 	}
 	public int getNumLots() {
 		return numLots;
+	}
+	public double getStandardPrice() {
+		return BASE_PRICE_DEFAULT;
 	}
 }
 

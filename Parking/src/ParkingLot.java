@@ -110,9 +110,9 @@ public class ParkingLot {
 			System.out.println("Max day log size reached. Cannot log anymore tickets");
 		}
 	}
-	public void getGeneralReport(String fileName) {
+	public void getGeneralReport(String fileName, String name) {
 		try {
-			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			PrintWriter writer = new PrintWriter(fileName + name, "UTF-8");
 			String concatReport = "";
 			for(int i = 0; i < dayLogSize; i++) {
 				//writer.write(dayLogs[i].getGeneralReport());
@@ -126,9 +126,9 @@ public class ParkingLot {
 			e.printStackTrace();
 		}
 	}
-	public void getFullReport(String fileName) {
+	public void getFullReport(String fileName, String name) {
 		try {
-			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			PrintWriter writer = new PrintWriter(fileName + name, "UTF-8");
 			String concatReport = "";
 			for(int i = 0; i < dayLogSize; i++) {
 				//writer.write(dayLogs[i].getFullReport());
@@ -142,9 +142,9 @@ public class ParkingLot {
 			e.printStackTrace();
 		}
 	}
-	public void getGeneralForR(String fileName) {
+	public void getGeneralForR(String fileName, String name) {
 		try {
-			PrintWriter writer = new PrintWriter(fileName, "UTF-8");
+			PrintWriter writer = new PrintWriter(fileName + name, "UTF-8");
 			String concatReport = "";
 			for(int i = 0; i < dayLogSize; i++) {
 				//writer.write(dayLogs[i].getFullReport());

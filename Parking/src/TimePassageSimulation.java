@@ -10,19 +10,19 @@ public class TimePassageSimulation {
 	// Time increment value
 	private long tickTime;
 	// Seconds from start of the day the lot opens
-	private long simStartDay; // TODO DELETE
+	//private long simStartDay; // TODO DELETE
 	// Seconds from start of the day the lot closes
-	private long simEndDay; // TODO DELETE
+	//private long simEndDay; // TODO DELETE
 	// Active people in the simulation. In other words, those who have tickets
 	private ArrayList<Customer> activePeople;
-	public TimePassageSimulation(double activityRate, long tick, long curTime, long startDay, long endDay) {
+	/*public TimePassageSimulation(double activityRate, long tick, long curTime, long startDay, long endDay) {
 		generalActivity = activityRate;
 		activePeople = new ArrayList<Customer>();
 		tickTime = tick;
 		time = curTime;
 		simStartDay = startDay;
 		simEndDay = endDay;
-	}
+	}*/
 	public TimePassageSimulation(double activityRate, long tick, long curTime) {
 		generalActivity = activityRate;
 		activePeople = new ArrayList<Customer>();
@@ -30,24 +30,24 @@ public class TimePassageSimulation {
 		time = curTime;	
 	}
 	// Returns true if the tick results in a day at opening time
-	public boolean tick() {
+	/*public boolean tick() {
 		boolean before = isOpenTime();
 		time += tickTime;
 		return !before && isOpenTime();
-	}
+	}*/
 	public void tick___() {
 		time += tickTime;
 	}
 	public boolean isReevaluate(long startOfDay, long endOfDay) {
 		return !isOpenTimePrevTick(startOfDay, endOfDay) && isOpenTime(startOfDay, endOfDay);
 	}
-	public void runCurrentTick(PopulusDemand demand, ParkingLot lot) {
+	/*public void runCurrentTick(PopulusDemand demand, ParkingLot lot) {
 		long dayMidnight = SimulationInstance.getEpochTimeOfDay(time, simStartDay);
 		runLeavingCustomers(lot);
 		if(time < dayMidnight + simEndDay && time > dayMidnight + simStartDay) {
 			runNewCustomers(demand, lot);
 		}
-	}
+	}*/
 	public void runCurrentTick(PopulusDemand demand, ParkingLot[] lots) {
 		long dayMidnight;
 		ArrayList<ParkingLot> currentlyOpen = new ArrayList<ParkingLot>();
@@ -62,14 +62,14 @@ public class TimePassageSimulation {
 		runNewCustomers(demand, currentlyOpen.toArray(arr));
 	}
 	// Runs leaving customers section
-	private void runLeavingCustomers(ParkingLot lot) {
+	/*private void runLeavingCustomers(ParkingLot lot) {
 		for(int i = 0; i < activePeople.size(); i++) {
 			if(activePeople.get(i).readyToLeave(time)) {
 				lot.returnTicket(activePeople.get(i).getTicket(), time);
 				activePeople.remove(i--);
 			}
 		}
-	}
+	}*/
 	private void runLeavingCustomers() {
 		for(int i = 0; i < activePeople.size(); i++) {
 			if(activePeople.get(i).readyToLeave(time)) {
@@ -79,7 +79,7 @@ public class TimePassageSimulation {
 		}
 	}
 	// Runs new customers section
-	private void runNewCustomers(PopulusDemand demand, ParkingLot lot) {
+	/*private void runNewCustomers(PopulusDemand demand, ParkingLot lot) {
 		int newCustomers = (int)(generalActivity * Math.random());
 		for(int i = 0; i < newCustomers; i++) {
 			// Checks if customer is ok with the price
@@ -90,7 +90,7 @@ public class TimePassageSimulation {
 				}
 			}
 		}
-	}
+	}*/
 	private void runNewCustomers(PopulusDemand demand, ParkingLot[] lots) {
 		int newCustomers = (int)(generalActivity * Math.random() * lots.length);
 		ParkingLot[] orderedLots = orderByPrice(lots);
@@ -123,14 +123,14 @@ public class TimePassageSimulation {
 	public long getTime() {
 		return time;
 	}
-	private boolean isOpenTime() {
+	/*private boolean isOpenTime() {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(time * 1000);
 		c.set(Calendar.HOUR_OF_DAY, 0);
 		c.set(Calendar.MINUTE, 0);
 		c.set(Calendar.SECOND, 0);
 		return (c.getTimeInMillis()/1000 + simStartDay <= time && c.getTimeInMillis()/1000 + simEndDay >= time);
-	}
+	}*/
 	public boolean isOpenTime(long startOfDay, long endOfDay) {
 		Calendar c = Calendar.getInstance();
 		c.setTimeInMillis(time * 1000);

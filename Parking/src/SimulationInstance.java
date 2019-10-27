@@ -3,7 +3,7 @@ import java.util.Calendar;
 
 // Class for each parking simulation instance
 public class SimulationInstance {
-	private ParkingLot lot; // TODO DELETE
+	//private ParkingLot lot; // TODO DELETE
 	private ParkingLot[] lots;
 	private PopulusDemand popDemand;
 	private TimePassageSimulation timePassage;
@@ -25,20 +25,20 @@ public class SimulationInstance {
 	}
 	// Instantiate objects
 	private void initData() {
-		simStart = getEpochTimeOfDay(Instant.now().getEpochSecond(), inputData.getOpenTime());
-		simEnd = getEpochTimeOfDay(simStart + 86400 * inputData.getSimDays(), inputData.getOpenTime());
-		lot = new ParkingLot(inputData.getMaxSpots(), inputData.getBasePrice(), inputData.getOverTime());
+		simStart = getEpochTimeOfDay(Instant.now().getEpochSecond(), inputData.getEarliestOpenTime());
+		simEnd = getEpochTimeOfDay(simStart + 86400 * inputData.getSimDays(), inputData.getEarliestOpenTime());
+		//lot = new ParkingLot(inputData.getMaxSpots(), inputData.getBasePrice(), inputData.getOverTime());
 		///////
 		lots = new ParkingLot[inputData.getNumLots()];
 		for(int i = 0; i < lots.length; i++) {
 			lots[i] = new ParkingLot(inputData.getMaxSpots___()[i], inputData.getBasePrice___()[i], inputData.getOverTime___()[i], inputData.getOpenTime___()[i], inputData.getCloseTime___()[i]);
 		}
 		///////
-		popDemand = new PopulusDemand(inputData.getPickyness(), inputData.getBasePrice());
-		timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getMaxSpots(), inputData.getTickTime(), simStart, inputData.getOpenTime(), inputData.getCloseTime());             
-		
+		popDemand = new PopulusDemand(inputData.getPickyness(), inputData.getStandardPrice());
+		//timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getMaxSpots(), inputData.getTickTime(), simStart, inputData.getOpenTime(), inputData.getCloseTime());             
+		timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getLargestMaxSpots(), inputData.getTickTime(), simStart);
 	}
-	public void runSimulation() {
+	/*public void runSimulation() {
 		// Keep running until end of simulation + offset for people leaving
 		while(timePassage.getTime() < simEnd + 3*inputData.getOverTime()) {
 			/////////////for(int i = 0; i < inputData.length; i++)
@@ -48,11 +48,11 @@ public class SimulationInstance {
 			timePassage.runCurrentTick(popDemand, lot);
 			/////////////timePassage.runCurrentTick(popDemand, lot, new Customer());
 		}
-	}
+	}*/
 	public void runSimulation___() {
 		// Keep running until end of simulation + offset for people leaving
-		while(timePassage.getTime() < simEnd + 3*inputData.getOverTime()) {
-			timePassage.tick();
+		while(timePassage.getTime() < simEnd + 3*inputData.getLargestOverTime()) {
+			timePassage.tick___();
 			for(int i = 0; i < lots.length; i++) {
 				if(timePassage.isReevaluate(lots[i].getStartDayTime(), lots[i].getCloseDayTime()) && inputData.getAllowPriceChange()) {
 					lots[i].reevaluatePrice();
@@ -63,13 +63,19 @@ public class SimulationInstance {
 		}
 	}
 	public void getGeneralReport(String fileName) {
-		lot.getGeneralReport(fileName);
+		for(int i = 0; i < lots.length; i++) {
+			lots[i].getGeneralReport(fileName, "_" + i + ".txt");
+		}
 	}
 	public void getFullReport(String fileName) {
-		lot.getFullReport(fileName);
+		for(int i = 0; i < lots.length; i++) {
+			lots[i].getFullReport(fileName, "_" + i + ".txt");
+		}
 	}
 	public void getGeneralReportForR(String fileName) {
-		lot.getGeneralForR(fileName);
+		for(int i = 0; i < lots.length; i++) {
+			lots[i].getGeneralForR(fileName, "_" + i + ".txt");
+		}
 	}
 	// Gets the open time for the day 
 	public static long getEpochTimeOfDay(long timeToSet, long startTime) {
