@@ -1,0 +1,12 @@
+# Used for custom input data
+Lot_MaxSpots=1000
+Lot_BasePrice=5.0 4.0 3.0
+Lot_TimePerCharge=7200
+Lot_OpenTime=21600
+Lot_CloseTime=72000 72000 72000
+Population_Pickyness=0.5
+Population_ActivityRate=0.1
+Simulation_Days=30
+Simulation_TickTime=600
+Simulation_AllowPriceChange=TRUE
+Simulation_NumberOfLots=3

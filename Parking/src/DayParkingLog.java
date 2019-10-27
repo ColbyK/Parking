@@ -11,7 +11,7 @@ public class DayParkingLog {
 	// Base price for the lot at this day
 	private double basePrice;
 	// Maximum size of the ticket log
-	private static final int MAX_LOG_SIZE = 10000;
+	private static final int MAX_LOG_SIZE = 25000;
 	
 	public DayParkingLog(long dayMarker, double price) {
 		day = dayMarker;
