@@ -34,7 +34,7 @@ public class ParkingLot {
 	// Creates a ticket with with given time, logs and returns it
 	public ParkingTicket requestTicket(long time) {
 		if(!isFull()) {
-			ParkingTicket ticket = new ParkingTicket(currentPrice, time, overtimeLength);
+			ParkingTicket ticket = new ParkingTicket(this, currentPrice, time, overtimeLength);
 			logTicket(ticket);
 			activeTickets.add(ticket);
 			return ticket;

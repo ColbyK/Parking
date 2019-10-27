@@ -11,12 +11,15 @@ public class ParkingTicket {
 	private long outTime;
 	// The time allowed for each car to stay in the lot
 	private long timeSegment;
+	// Parking lot associated with the ticket
+	private ParkingLot lot;
 	
-	public ParkingTicket(double price, long in, long time) {
+	public ParkingTicket(ParkingLot fromLot, double price, long in, long time) {
 		ticketPrice = price;
 		inTime = in;
 		outTime = -1;
 		timeSegment = time;
+		lot = fromLot;
 	}
 	
 	// Function for closing a ticket
@@ -50,5 +53,8 @@ public class ParkingTicket {
 	}
 	public long getInTime() {
 		return inTime;
+	}
+	public ParkingLot getLot() {
+		return lot;
 	}
 }

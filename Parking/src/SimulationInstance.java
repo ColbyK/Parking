@@ -7,6 +7,7 @@ public class SimulationInstance {
 	private PopulusDemand popDemand;
 	private TimePassageSimulation timePassage;
 	private ParkingInputData inputData;
+	// /////private ParkingInputData[] inputData;
 	// Start time of the simulation
 	private long simEnd;
 	// End time of the simulation
@@ -33,10 +34,12 @@ public class SimulationInstance {
 	public void runSimulation() {
 		// Keep running until end of simulation + offset for people leaving
 		while(timePassage.getTime() < simEnd + 3*inputData.getOverTime()) {
+			/////////////for(int i = 0; i < inputData.length; i++)
 			if(timePassage.tick() && inputData.getAllowPriceChange()) {
 				lot.reevaluatePrice();
 			}
 			timePassage.runCurrentTick(popDemand, lot);
+			/////////////timePassage.runCurrentTick(popDemand, lot, new Customer());
 		}
 	}
 	public void getGeneralReport(String fileName) {
