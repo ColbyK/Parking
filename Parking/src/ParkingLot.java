@@ -22,19 +22,9 @@ public class ParkingLot {
 	private long openTime;
 	// Time since start of day for close time of the lot
 	private long closeTime;
-	// Flag to
-	//private boolean priceBranchFlag;
 	// Maximum size for the ticketLog
 	private static final int MAX_DAY_LOG_SIZE = 250;
 	
-	public ParkingLot(int spots, double price, long overtime) {
-		maxSpots = spots;
-		currentPrice = price;
-		overtimeLength = overtime;
-		activeTickets = new ArrayList<ParkingTicket>();
-		dayLogs = new DayParkingLog[MAX_DAY_LOG_SIZE];
-		dayLogSize = 0;
-	}
 	public ParkingLot(int spots, double price, long overtime, long open, long close) {
 		maxSpots = spots;
 		currentPrice = price;

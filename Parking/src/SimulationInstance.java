@@ -3,12 +3,10 @@ import java.util.Calendar;
 
 // Class for each parking simulation instance
 public class SimulationInstance {
-	//private ParkingLot lot; // TODO DELETE
 	private ParkingLot[] lots;
 	private PopulusDemand popDemand;
 	private TimePassageSimulation timePassage;
 	private ParkingInputData inputData;
-	// /////private ParkingInputData[] inputData;
 	// Start time of the simulation
 	private long simEnd;
 	// End time of the simulation
@@ -27,39 +25,23 @@ public class SimulationInstance {
 	private void initData() {
 		simStart = getEpochTimeOfDay(Instant.now().getEpochSecond(), inputData.getEarliestOpenTime());
 		simEnd = getEpochTimeOfDay(simStart + 86400 * inputData.getSimDays(), inputData.getEarliestOpenTime());
-		//lot = new ParkingLot(inputData.getMaxSpots(), inputData.getBasePrice(), inputData.getOverTime());
-		///////
 		lots = new ParkingLot[inputData.getNumLots()];
 		for(int i = 0; i < lots.length; i++) {
-			lots[i] = new ParkingLot(inputData.getMaxSpots___()[i], inputData.getBasePrice___()[i], inputData.getOverTime___()[i], inputData.getOpenTime___()[i], inputData.getCloseTime___()[i]);
+			lots[i] = new ParkingLot(inputData.getMaxSpots()[i], inputData.getBasePrice()[i], inputData.getOverTime()[i], inputData.getOpenTime()[i], inputData.getCloseTime()[i]);
 		}
-		///////
-		popDemand = new PopulusDemand(inputData.getPickyness(), inputData.getStandardPrice());
-		//timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getMaxSpots(), inputData.getTickTime(), simStart, inputData.getOpenTime(), inputData.getCloseTime());             
+		popDemand = new PopulusDemand(inputData.getPickyness(), inputData.getStandardPrice());             
 		timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getLargestMaxSpots(), inputData.getTickTime(), simStart);
 	}
-	/*public void runSimulation() {
-		// Keep running until end of simulation + offset for people leaving
-		while(timePassage.getTime() < simEnd + 3*inputData.getOverTime()) {
-			/////////////for(int i = 0; i < inputData.length; i++)
-			if(timePassage.tick() && inputData.getAllowPriceChange()) {
-				lot.reevaluatePrice();
-			}
-			timePassage.runCurrentTick(popDemand, lot);
-			/////////////timePassage.runCurrentTick(popDemand, lot, new Customer());
-		}
-	}*/
-	public void runSimulation___() {
+	public void runSimulation() {
 		// Keep running until end of simulation + offset for people leaving
 		while(timePassage.getTime() < simEnd + 3*inputData.getLargestOverTime()) {
-			timePassage.tick___();
+			timePassage.tick();
 			for(int i = 0; i < lots.length; i++) {
 				if(timePassage.isReevaluate(lots[i].getStartDayTime(), lots[i].getCloseDayTime()) && inputData.getAllowPriceChange()) {
 					lots[i].reevaluatePrice();
 				}
 				timePassage.runCurrentTick(popDemand, lots);
 			}
-			/////////////timePassage.runCurrentTick(popDemand, lot, new Customer());
 		}
 	}
 	public void getGeneralReport(String fileName) {

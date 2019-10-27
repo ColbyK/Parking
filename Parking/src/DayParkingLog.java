@@ -19,6 +19,7 @@ public class DayParkingLog {
 		dayLogSize = 0;
 		basePrice = price;
 	}
+	// Adds ticket to lot log
 	public void addTicket(ParkingTicket ticket) {
 		if(dayLogSize < MAX_LOG_SIZE) {
 			ticketLog[dayLogSize++] = ticket;
@@ -67,6 +68,7 @@ public class DayParkingLog {
 				return "MONTH ERROR";
 		}
 	}
+	// Gets the income generated for this lot on this day
 	public double getDayIncome() {
 		double money = 0;
 		for(int i = 0; i < dayLogSize; i++) {
@@ -74,7 +76,7 @@ public class DayParkingLog {
 		}
 		return money;
 	}
-	// Used for rull report
+	// Used for Report
 	public String toString() {
 		return getFullReport();
 	}
