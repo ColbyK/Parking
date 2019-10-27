@@ -16,8 +16,12 @@ public class ParkingLot {
 	private int maxSpots;
 	// The current price of a ticket 
 	private double currentPrice;
-	// The time allowed for being in the lot, after that time essentially pay for a new ticket (price is doubled then tripled aand so on).
+	// The time allowed for being in the lot, after that time essentially pay for a new ticket (price is doubled then tripled and so on).
 	private long overtimeLength;
+	// Time since start of day for open time of the lot
+	private long openTime;
+	// Time since start of day for close time of the lot
+	private long closeTime;
 	// Flag to
 	//private boolean priceBranchFlag;
 	// Maximum size for the ticketLog
@@ -30,6 +34,16 @@ public class ParkingLot {
 		activeTickets = new ArrayList<ParkingTicket>();
 		dayLogs = new DayParkingLog[MAX_DAY_LOG_SIZE];
 		dayLogSize = 0;
+	}
+	public ParkingLot(int spots, double price, long overtime, long open, long close) {
+		maxSpots = spots;
+		currentPrice = price;
+		overtimeLength = overtime;
+		activeTickets = new ArrayList<ParkingTicket>();
+		dayLogs = new DayParkingLog[MAX_DAY_LOG_SIZE];
+		dayLogSize = 0;
+		openTime = open;
+		closeTime = close;
 	}
 	// Creates a ticket with with given time, logs and returns it
 	public ParkingTicket requestTicket(long time) {
@@ -68,6 +82,12 @@ public class ParkingLot {
 	// Gets the time allowed for the current price
 	public long getTimeAllowed() {
 		return overtimeLength;
+	}
+	public long getStartDayTime() {
+		return openTime;
+	}
+	public long getCloseDayTime() {
+		return closeTime;
 	}
 	// Helper method to add tickets to log
 	private void logTicket(ParkingTicket ticket) {

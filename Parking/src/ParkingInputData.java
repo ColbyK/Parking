@@ -115,6 +115,7 @@ public class ParkingInputData {
 		overTimeArr = tempOverTime;
 		openTimeArr = tempOpenTime;
 		closeTimeArr = tempCloseTime;
+		numLots = maxLots;
 	}
 	private void checkInputLine(String line) {
 		String lineTest = "";

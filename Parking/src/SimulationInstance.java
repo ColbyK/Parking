@@ -3,7 +3,8 @@ import java.util.Calendar;
 
 // Class for each parking simulation instance
 public class SimulationInstance {
-	private ParkingLot lot;
+	private ParkingLot lot; // TODO DELETE
+	private ParkingLot[] lots;
 	private PopulusDemand popDemand;
 	private TimePassageSimulation timePassage;
 	private ParkingInputData inputData;
@@ -27,6 +28,12 @@ public class SimulationInstance {
 		simStart = getEpochTimeOfDay(Instant.now().getEpochSecond(), inputData.getOpenTime());
 		simEnd = getEpochTimeOfDay(simStart + 86400 * inputData.getSimDays(), inputData.getOpenTime());
 		lot = new ParkingLot(inputData.getMaxSpots(), inputData.getBasePrice(), inputData.getOverTime());
+		///////
+		lots = new ParkingLot[inputData.getNumLots()];
+		for(int i = 0; i < lots.length; i++) {
+			lots[i] = new ParkingLot(inputData.getMaxSpots___()[i], inputData.getBasePrice___()[i], inputData.getOverTime___()[i], inputData.getOpenTime___()[i], inputData.getCloseTime___()[i]);
+		}
+		///////
 		popDemand = new PopulusDemand(inputData.getPickyness(), inputData.getBasePrice());
 		timePassage = new TimePassageSimulation(inputData.getActivityRate() * inputData.getMaxSpots(), inputData.getTickTime(), simStart, inputData.getOpenTime(), inputData.getCloseTime());             
 		
@@ -39,6 +46,19 @@ public class SimulationInstance {
 				lot.reevaluatePrice();
 			}
 			timePassage.runCurrentTick(popDemand, lot);
+			/////////////timePassage.runCurrentTick(popDemand, lot, new Customer());
+		}
+	}
+	public void runSimulation___() {
+		// Keep running until end of simulation + offset for people leaving
+		while(timePassage.getTime() < simEnd + 3*inputData.getOverTime()) {
+			timePassage.tick();
+			for(int i = 0; i < lots.length; i++) {
+				if(timePassage.isReevaluate(lots[i].getStartDayTime(), lots[i].getCloseDayTime()) && inputData.getAllowPriceChange()) {
+					lots[i].reevaluatePrice();
+				}
+				timePassage.runCurrentTick(popDemand, lots);
+			}
 			/////////////timePassage.runCurrentTick(popDemand, lot, new Customer());
 		}
 	}
